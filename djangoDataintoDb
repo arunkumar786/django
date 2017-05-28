@@ -1,0 +1,344 @@
+In [1]: from polls.models import Question, Choice
+
+In [2]: # let's put some data into the db
+
+In [3]: Question.objects.all()
+Out[3]: []
+
+In [4]: # create a new question.
+
+In [5]: from django.utils import timezone
+
+In [6]: q=Question(question="what's new?", pub_date=timezone.now())
+
+In [7]: # save the object into  db
+
+In [8]: q.save()
+
+In [9]: q.id
+Out[9]: 1L
+
+In [10]: q.question
+Out[10]: "what's new?"
+
+In [11]: q.pub_date
+Out[11]: datetime.datetime(2017, 5, 28, 5, 12, 46, 743163, tzinfo=<UTC>)
+
+In [12]: # we can change the values by this.
+
+In [13]: q.question = "What's up?"
+
+In [14]: q.save()
+
+In [15]: object
+object
+
+In [15]: objects.all()
+---------------------------------------------------------------------------
+NameError                                 Traceback (most recent call last)
+<ipython-input-15-d4ed37ad39d3> in <module>()
+----> 1 objects.all()
+
+NameError: name 'objects' is not defined
+
+In [16]: Question.objects.all()
+Out[16]: [<Question: Question object>]
+
+Inorder to see the stirng representation we added we need to start shell again.
+
+In [1]: from polls.models import Question, Choice
+
+In [2]: Question.objects.all()
+Out[2]: [<Question: What's up?>]
+
+
+In [1]: from polls.models import Question, Choice
+
+In [2]: Question.objects.all()
+Out[2]: [<Question: What's up?>]
+
+In [3]: from django.utils import time
+timesince  timezone   
+
+In [3]: from django.utils import timezone
+
+In [4]: current_year = timezone.now().year
+
+In [5]: q
+%quickref  quit       
+
+In [5]: Question.objects.get(pub_date__year=current_year)
+Out[5]: <Question: What's up?>
+
+In [6]: # request id doesn't exist that will raise an error.
+
+In [7]: Question.objects.get(id=2)
+---------------------------------------------------------------------------
+DoesNotExist                              Traceback (most recent call last)
+<ipython-input-7-e5ad49b3e3e3> in <module>()
+----> 1 Question.objects.get(id=2)
+
+/usr/local/lib/python2.7/dist-packages/django/db/models/manager.pyc in manager_method(self, *args, **kwargs)
+    125         def create_method(name, method):
+    126             def manager_method(self, *args, **kwargs):
+--> 127                 return getattr(self.get_queryset(), name)(*args, **kwargs)
+    128             manager_method.__name__ = method.__name__
+    129             manager_method.__doc__ = method.__doc__
+
+/usr/local/lib/python2.7/dist-packages/django/db/models/query.pyc in get(self, *args, **kwargs)
+    332             raise self.model.DoesNotExist(
+    333                 "%s matching query does not exist." %
+--> 334                 self.model._meta.object_name
+    335             )
+    336         raise self.model.MultipleObjectsReturned(
+
+DoesNotExist: Question matching query does not exist.
+
+In [8]: Question.objects.get(id=1)
+Out[8]: <Question: What's up?>
+
+In [9]: q=Question.objects.get(id=1)
+
+In [10]: q.was_published_recently()
+Out[10]: True
+
+In [11]: # so our custom method worked.
+
+In [12]: # check any choices related to the question object set.
+
+In [13]: q.choice_set.all()
+Out[13]: []
+
+In [14]: q.choice_set.cre
+q.choice_set.create            q.choice_set.creation_counter
+
+In [14]: q.choice_set.create(choice_text="the sky", votes=0)
+Out[14]: <Choice: the sky>
+
+In [15]: q.choice_set.create(choice_text="Not much", votes=0)
+Out[15]: <Choice: Not much>
+
+In [16]: c= q.choice_set.cre
+q.choice_set.create            q.choice_set.creation_counter
+
+In [16]: c= q.choice_set.creat
+q.choice_set.create            q.choice_set.creation_counter
+
+In [16]: c= q.choice_set.create(choice_text='Just hacking again', votes=0)
+
+In [17]: c.question
+Out[17]: <Question: What's up?>
+
+In [18]: c.choice_text.all()
+---------------------------------------------------------------------------
+AttributeError                            Traceback (most recent call last)
+<ipython-input-18-a6b442ad9007> in <module>()
+----> 1 c.choice_text.all()
+
+AttributeError: 'str' object has no attribute 'all'
+
+In [19]: c.choice_set.all()
+---------------------------------------------------------------------------
+AttributeError                            Traceback (most recent call last)
+<ipython-input-19-1fd6ad927647> in <module>()
+----> 1 c.choice_set.all()
+
+AttributeError: 'Choice' object has no attribute 'choice_set'
+
+In [20]: q.choice_set.all()
+Out[20]: [<Choice: the sky>, <Choice: Not much>, <Choice: Just hacking again>]
+
+In [21]: q.choice_set.count()
+Out[21]: 3
+
+In [22]: c = Choice(choice_text="Not Much", votes=0)
+
+In [23]: c= Choice(choice_text="The sky", votes=0)
+
+In [24]: c= Choice(choice_text="Just HackAgain", votes=0)
+
+In [25]: c.save()
+---------------------------------------------------------------------------
+IntegrityError                            Traceback (most recent call last)
+<ipython-input-25-6970514bfc33> in <module>()
+----> 1 c.save()
+
+/usr/local/lib/python2.7/dist-packages/django/db/models/base.pyc in save(self, force_insert, force_update, using, update_fields)
+    708 
+    709         self.save_base(using=using, force_insert=force_insert,
+--> 710                        force_update=force_update, update_fields=update_fields)
+    711     save.alters_data = True
+    712 
+
+/usr/local/lib/python2.7/dist-packages/django/db/models/base.pyc in save_base(self, raw, force_insert, force_update, using, update_fields)
+    736             if not raw:
+    737                 self._save_parents(cls, using, update_fields)
+--> 738             updated = self._save_table(raw, cls, force_insert, force_update, using, update_fields)
+    739         # Store the database on which the object was saved
+    740         self._state.db = using
+
+/usr/local/lib/python2.7/dist-packages/django/db/models/base.pyc in _save_table(self, raw, cls, force_insert, force_update, using, update_fields)
+    820 
+    821             update_pk = bool(meta.has_auto_field and not pk_set)
+--> 822             result = self._do_insert(cls._base_manager, using, fields, update_pk, raw)
+    823             if update_pk:
+    824                 setattr(self, meta.pk.attname, result)
+
+/usr/local/lib/python2.7/dist-packages/django/db/models/base.pyc in _do_insert(self, manager, using, fields, update_pk, raw)
+    859         """
+    860         return manager._insert([self], fields=fields, return_id=update_pk,
+--> 861                                using=using, raw=raw)
+    862 
+    863     def delete(self, using=None):
+
+/usr/local/lib/python2.7/dist-packages/django/db/models/manager.pyc in manager_method(self, *args, **kwargs)
+    125         def create_method(name, method):
+    126             def manager_method(self, *args, **kwargs):
+--> 127                 return getattr(self.get_queryset(), name)(*args, **kwargs)
+    128             manager_method.__name__ = method.__name__
+    129             manager_method.__doc__ = method.__doc__
+
+/usr/local/lib/python2.7/dist-packages/django/db/models/query.pyc in _insert(self, objs, fields, return_id, raw, using)
+    918         query = sql.InsertQuery(self.model)
+    919         query.insert_values(fields, objs, raw=raw)
+--> 920         return query.get_compiler(using=using).execute_sql(return_id)
+    921     _insert.alters_data = True
+    922     _insert.queryset_only = False
+
+/usr/local/lib/python2.7/dist-packages/django/db/models/sql/compiler.pyc in execute_sql(self, return_id)
+    961         with self.connection.cursor() as cursor:
+    962             for sql, params in self.as_sql():
+--> 963                 cursor.execute(sql, params)
+    964             if not (return_id and cursor):
+    965                 return
+
+/usr/local/lib/python2.7/dist-packages/django/db/backends/utils.pyc in execute(self, sql, params)
+     77         start = time()
+     78         try:
+---> 79             return super(CursorDebugWrapper, self).execute(sql, params)
+     80         finally:
+     81             stop = time()
+
+/usr/local/lib/python2.7/dist-packages/django/db/backends/utils.pyc in execute(self, sql, params)
+     62                 return self.cursor.execute(sql)
+     63             else:
+---> 64                 return self.cursor.execute(sql, params)
+     65 
+     66     def executemany(self, sql, param_list):
+
+/usr/local/lib/python2.7/dist-packages/django/db/backends/mysql/base.pyc in execute(self, query, args)
+    127             # misclassified and Django would prefer the more logical place.
+    128             if e.args[0] in self.codes_for_integrityerror:
+--> 129                 six.reraise(utils.IntegrityError, utils.IntegrityError(*tuple(e.args)), sys.exc_info()[2])
+    130             raise
+    131 
+
+/usr/local/lib/python2.7/dist-packages/django/db/backends/mysql/base.pyc in execute(self, query, args)
+    122         try:
+    123             # args is None means no string interpolation
+--> 124             return self.cursor.execute(query, args)
+    125         except Database.OperationalError as e:
+    126             # Map some error codes to IntegrityError, since they seem to be
+
+/usr/lib/python2.7/dist-packages/MySQLdb/cursors.pyc in execute(self, query, args)
+    172             del tb
+    173             self.messages.append((exc, value))
+--> 174             self.errorhandler(self, exc, value)
+    175         self._executed = query
+    176         if not self._defer_warnings: self._warning_check()
+
+/usr/lib/python2.7/dist-packages/MySQLdb/connections.pyc in defaulterrorhandler(***failed resolving arguments***)
+     34     del cursor
+     35     del connection
+---> 36     raise errorclass, errorvalue
+     37 
+     38 re_numeric_part = re.compile(r"^(\d+)")
+
+IntegrityError: (1048, "Column 'question_id' cannot be null")
+
+In [26]: q.save()
+
+In [27]: Choice.objects.filter(quetion__pub_date__year=current_year)
+---------------------------------------------------------------------------
+FieldError                                Traceback (most recent call last)
+<ipython-input-27-da55493d452b> in <module>()
+----> 1 Choice.objects.filter(quetion__pub_date__year=current_year)
+
+/usr/local/lib/python2.7/dist-packages/django/db/models/manager.pyc in manager_method(self, *args, **kwargs)
+    125         def create_method(name, method):
+    126             def manager_method(self, *args, **kwargs):
+--> 127                 return getattr(self.get_queryset(), name)(*args, **kwargs)
+    128             manager_method.__name__ = method.__name__
+    129             manager_method.__doc__ = method.__doc__
+
+/usr/local/lib/python2.7/dist-packages/django/db/models/query.pyc in filter(self, *args, **kwargs)
+    677         set.
+    678         """
+--> 679         return self._filter_or_exclude(False, *args, **kwargs)
+    680 
+    681     def exclude(self, *args, **kwargs):
+
+/usr/local/lib/python2.7/dist-packages/django/db/models/query.pyc in _filter_or_exclude(self, negate, *args, **kwargs)
+    695             clone.query.add_q(~Q(*args, **kwargs))
+    696         else:
+--> 697             clone.query.add_q(Q(*args, **kwargs))
+    698         return clone
+    699 
+
+/usr/local/lib/python2.7/dist-packages/django/db/models/sql/query.pyc in add_q(self, q_object)
+   1299         existing_inner = set(
+   1300             (a for a in self.alias_map if self.alias_map[a].join_type == INNER))
+-> 1301         clause, require_inner = self._add_q(where_part, self.used_aliases)
+   1302         self.where.add(clause, AND)
+   1303         for hp in having_parts:
+
+/usr/local/lib/python2.7/dist-packages/django/db/models/sql/query.pyc in _add_q(self, q_object, used_aliases, branch_negated, current_negated, allow_joins)
+   1326                 child_clause, needed_inner = self.build_filter(
+   1327                     child, can_reuse=used_aliases, branch_negated=branch_negated,
+-> 1328                     current_negated=current_negated, connector=connector, allow_joins=allow_joins)
+   1329                 joinpromoter.add_votes(needed_inner)
+   1330             target_clause.add(child_clause, connector)
+
+/usr/local/lib/python2.7/dist-packages/django/db/models/sql/query.pyc in build_filter(self, filter_expr, branch_negated, current_negated, can_reuse, connector, allow_joins)
+   1142         if not arg:
+   1143             raise FieldError("Cannot parse keyword query %r" % arg)
+-> 1144         lookups, parts, reffed_aggregate = self.solve_lookup_type(arg)
+   1145         if not allow_joins and len(parts) > 1:
+   1146             raise FieldError("Joined field references are not permitted in this query")
+
+/usr/local/lib/python2.7/dist-packages/django/db/models/sql/query.pyc in solve_lookup_type(self, lookup)
+   1028             if aggregate:
+   1029                 return aggregate_lookups, (), aggregate
+-> 1030         _, field, _, lookup_parts = self.names_to_path(lookup_splitted, self.get_meta())
+   1031         field_parts = lookup_splitted[0:len(lookup_splitted) - len(lookup_parts)]
+   1032         if len(lookup_parts) == 0:
+
+/usr/local/lib/python2.7/dist-packages/django/db/models/sql/query.pyc in names_to_path(self, names, opts, allow_many, fail_on_missing)
+   1384                     available = sorted(field_names + list(self.annotation_select))
+   1385                     raise FieldError("Cannot resolve keyword %r into field. "
+-> 1386                                      "Choices are: %s" % (name, ", ".join(available)))
+   1387                 break
+   1388             # Check if we need any joins for concrete inheritance cases (the
+
+FieldError: Cannot resolve keyword 'quetion' into field. Choices are: choice_text, id, question, question_id, votes
+
+In [28]: Choice.objects.filter(question__pub_date__year=current_year)
+Out[28]: [<Choice: the sky>, <Choice: Not much>, <Choice: Just hacking again>]
+
+In [29]: # let's delete one of the choices. Use delete() for that.
+
+In [30]: c = q.choice_set.filter(choice_text__startswith='Just hacking')
+
+In [31]: c.delete()
+
+In [32]: c.save()
+---------------------------------------------------------------------------
+AttributeError                            Traceback (most recent call last)
+<ipython-input-32-6970514bfc33> in <module>()
+----> 1 c.save()
+
+AttributeError: 'QuerySet' object has no attribute 'save'
+
+In [33]: q.save()
+
+
