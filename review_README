@@ -1,0 +1,14 @@
+1.first start the django server on localhost.
+
+2. Then register with your specified users.
+
+3. login with the user.
+
+4. Add movies, get the review for each movie.
+
+5. Inorder to get the review of each movie you need to enter movie name manually.
+6. listing of existing movies done as dropdown list but not integrated becoz, whenever new movie added it is updating in the dropdown list, when server is restarting then it is getting updated.
+
+7.Anonymous user review is not done yet.
+
+8. Above two cases are failing rest all are done as per my understing.
