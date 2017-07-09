@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Movie Review{% endblock %}
+{% block head %}Movie Review{% endblock %}
+{% block content %}
+    <form method="post" action="/moviename/">{% csrf_token %}
+    <table border="0">
+    {{ movie_form.as_table }}
+    </table>
+    <input type='SUBMIT' value='OK' />
+    </form>
+
+{% endblock %}

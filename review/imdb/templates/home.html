@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Welcome to MovieReview App{% endblock %}
+{% block head %}Welcome to MovieReview App{% endblock %}
+{% block content %}
+    <p>Welcome {{ user.username }} !!!</p>
+    <p>Please click the below MovieReview link to get the movie review </p>
+    <a href="/moviename">MovieReview</a><br />
+    <br />
+    <p>To add movie Please click AddMovie hyper link </p>
+    <a href="/addmovie">AddMovie</a><br />
+    <br />
+    <a href="/logout/">Logout</a>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Movie Details{% endblock %}
+{% block head %}moviedetails{% endblock %}
+{% block content %}
+<p> movie name is: {{ movieName }} <br />
+average rating is: {{ avgrating }} <br />
+total reviews are: {{ totalReviews }} <br />
+total comments are: {{ totalComments }} <br /> </p>
+<p> list of comments are as follows: </p>
+<ul>
+{% for i in obj %}
+<li>
+{{ i.comments }}
+</li>
+{% endfor %}
+</ul> 
+<a href="/moviename">MovieReview</a><br />
+<a href="/addmovie">AddMovie</a><br />
+<a href="/logout/">Logout</a>
+{% endblock %}

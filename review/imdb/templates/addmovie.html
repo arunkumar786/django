@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}New Movie{% endblock %}
+{% block head %}New Movie{% endblock %}
+{% block content %}
+    <form method="post" action="/addmovie/">{% csrf_token %}
+        {{ addMovieForm.errors }}
+        {{ addMovieForm.non_field_errors }}
+        <table border="0">
+            {{ addMovieForm.as_table }}
+        </table>
+        <input type="submit" value="SUBMIT" />
+    </form>
+{% endblock %}
